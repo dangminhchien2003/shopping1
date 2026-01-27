@@ -1,0 +1,139 @@
+{
+  "_version": "1.60.0",
+  "sap.app": {
+    "id": "com.sphinxjsc.shopping1",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.18.7",
+      "toolsId": "9a2fbeac-878c-47cc-ab4e-f744d63b6702"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "sap/opu/odata/sap/ZODATA_MSTT_WORKOV_SRV/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.120.24",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.sphinxjsc.shopping1.i18n.i18n",
+          "supportedLocales": ["en", ""],
+          "fallbackLocale": ""
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.f.routing.Router",
+        "controlId": "fcl",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "com.sphinxjsc.shopping1.view",
+        "async": true,
+        "viewPath": "com.sphinxjsc.shopping1.view",
+        "bypassed": {
+          "target": "notFound"
+        }
+      },
+      "routes": [
+        {
+          "name": "RouteMain",
+          "pattern": ":?query:",
+          "target": ["TargetMain", "detail"]
+        },
+        {
+          "name": "detail",
+          "pattern": "detail/{step}/{substep}/{layout}",
+          "target": ["TargetMain", "detail"]
+        },
+
+        {
+          "name": "showNotFound",
+          "pattern": "notfound",
+          "target": ["notFound"]
+        }
+      ],
+      "targets": {
+        "TargetMain": {
+          "id": "Main",
+          "name": "Main",
+          "controlId": "fcl",
+          "controlAggregation": "beginColumnPages"
+        },
+        "detail": {
+          "name": "Detail",
+          "controlId": "fcl",
+          "controlAggregation": "midColumnPages"
+        },
+        "notFound": {
+          "viewId": "notFound",
+          "viewName": "NotFound",
+          "title": "{i18n>appTitle}"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "com.sphinxjsc.shopping1.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}

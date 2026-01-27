@@ -1,0 +1,211 @@
+<mvc:View
+    xmlns:rowmodes="sap.ui.table.rowmodes"
+    displayBlock="true"
+    controllerName="com.sphinxjsc.shopping1.controller.Detail"
+    height="100%"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:filterbar="sap.ui.comp.filterbar"
+    xmlns:table="sap.ui.table"
+>
+    <f:DynamicPage
+        headerExpanded="true"
+        id="dynamicPage"
+        showFooter="true"
+    >
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="{header>/name}" />
+                </f:heading>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader>
+                <f:content>
+                    <filterbar:FilterBar
+                        id="filterBar"
+                        persistencyKey="myPersKey"
+                        useToolbar="false"
+                        search="onSearch"
+                        showClearOnFB="true"
+                        clear="onClear"
+                        showGoOnFB="true"
+                        filterChange="onFilterChange"
+                        afterVariantLoad="onAfterVariantLoad"
+                    >
+                        <filterbar:filterGroupItems>
+                            <filterbar:FilterGroupItem
+                                name="Subject"
+                                label="Subject"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                            >
+                                <filterbar:control>
+                                    <Input
+                                        name="Subject"
+                                        change=""
+                                    />
+                                </filterbar:control>
+                            </filterbar:FilterGroupItem>
+
+                            <filterbar:FilterGroupItem
+                                name="From"
+                                label="From"
+                                groupName="Group2"
+                                visibleInFilterBar="true"
+                            >
+                                <filterbar:control>
+                                    <ComboBox
+                                        name="From"
+                                        change=""
+                                    />
+                                </filterbar:control>
+                            </filterbar:FilterGroupItem>
+
+                            <filterbar:FilterGroupItem
+                                name="Sent on"
+                                label="Sent on"
+                                groupName="Group3"
+                                visibleInFilterBar="true"
+                            >
+                                <filterbar:control>
+                                    <DatePicker
+                                        id="datePicker"
+                                        calendarWeekNumbering="MiddleEastern"
+                                        change=""
+                                    />
+                                </filterbar:control>
+                            </filterbar:FilterGroupItem>
+
+                            <filterbar:FilterGroupItem
+                                name="Priority"
+                                label="Priority"
+                                groupName="Group4"
+                                visibleInFilterBar="true"
+                            >
+                                <filterbar:control>
+                                    <ComboBox />
+                                </filterbar:control>
+                            </filterbar:FilterGroupItem>
+
+                            <filterbar:FilterGroupItem
+                                name="Due Date"
+                                label="Due Date"
+                                groupName="Group5"
+                                visibleInFilterBar="true"
+                            >
+                                <filterbar:control>
+                                    <DatePicker
+                                        id="datePicker2"
+                                        calendarWeekNumbering="MiddleEastern"
+                                    />
+                                </filterbar:control>
+                            </filterbar:FilterGroupItem>
+
+                            <filterbar:FilterGroupItem
+                                name="Status"
+                                label="Status"
+                                groupName="Group6"
+                                visibleInFilterBar="true"
+                            >
+                                <filterbar:control>
+                                    <ComboBox />
+                                </filterbar:control>
+                            </filterbar:FilterGroupItem>
+
+                            <filterbar:FilterGroupItem
+                                name="Forwarded By"
+                                label="Forwarded By"
+                                groupName="Group7"
+                                visibleInFilterBar="true"
+                            >
+                                <filterbar:control>
+                                    <Select />
+                                </filterbar:control>
+                            </filterbar:FilterGroupItem>
+                        </filterbar:filterGroupItems>
+                    </filterbar:FilterBar>
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <table:Table
+                id="table"
+                rows="{detail>/ProductCollection}"
+                selectionMode="MultiToggle"
+            >
+                <table:rowMode>
+                    <rowmodes:Fixed rowCount="10" />
+                </table:rowMode>
+
+                <table:extension>
+                    <OverflowToolbar class="sapMTBHeader-CTX">
+                        <Label
+                            id="title"
+                            text="Show:"
+                            required="true"
+                        />
+                        <ComboBox />
+                        <ToolbarSpacer />
+                        <Button icon="sap-icon://action-settings" />
+                    </OverflowToolbar>
+                </table:extension>
+
+                <table:noData>
+                    <IllustratedMessage
+                        illustrationType="sapIllus-NoSearchResults"
+                        enableVerticalResponsiveness="true"
+                    />
+                </table:noData>
+
+                <table:columns>
+                    <table:Column width="28rem">
+                        <Label text="Subject" />
+                        <table:template>
+                            <Link text="{detail>Task}" />
+                        </table:template>
+                    </table:Column>
+
+                    <table:Column width="10rem">
+                        <Label text="From" />
+                        <table:template>
+                            <Text text="{detail>WiForwBy}" />
+                        </table:template>
+                    </table:Column>
+
+                    <table:Column width="10rem">
+                        <Label text="Sent On" />
+                        <table:template>
+                            <Text text="{detail>WiCd}" />
+                        </table:template>
+                    </table:Column>
+
+                    <table:Column width="10rem">
+                        <Label text="Priority" />
+                        <table:template>
+                            <Text text="{detail>WiPrio}" />
+                        </table:template>
+                    </table:Column>
+
+                    <table:Column width="10rem">
+                        <Label text="Due date" />
+                        <table:template>
+                            <Text text="{detail>WiAed}" />
+                        </table:template>
+                    </table:Column>
+                </table:columns>
+            </table:Table>
+        </f:content>
+        <f:footer>
+            <OverflowToolbar id="footer">
+                <Button
+                    text="Refresh"
+                    type="Default"
+                    press="onRefresh"
+                />
+            </OverflowToolbar>
+        </f:footer>
+    </f:DynamicPage>
+</mvc:View>

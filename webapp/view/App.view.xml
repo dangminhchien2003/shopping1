@@ -1,0 +1,14 @@
+<mvc:View
+    controllerName="com.sphinxjsc.shopping1.controller.App"
+    displayBlock="true"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.f"
+    height="100%"
+>
+    <FlexibleColumnLayout
+        id="fcl"
+        stateChange="onStateChanged"
+        layout="{ui>/layout}"
+        backgroundDesign="Translucent"
+    />
+</mvc:View>

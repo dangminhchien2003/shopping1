@@ -1,0 +1,31 @@
+<mvc:View
+    controllerName="com.sphinxjsc.shopping1.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+>
+    <Page
+        title="Active queries"
+        showHeader="true"
+    >
+        <content>
+            <Tree
+                id="tree"
+                items="{
+                    path: 'workflow>/steps',
+                    parameters: {
+                    numberOfExpandedLevels: 1, 
+                        arrayNames: ['ToSubstepList']
+                    }
+                }"
+                mode="SingleSelectMaster"
+                selectionChange="onSelectionChange"
+            >
+                <StandardTreeItem
+                    title="{= ${workflow>SubstepDescr} ? ${workflow>SubstepDescr} : ${workflow>StepDescr} }"
+                    icon="{path: 'workflow>Substep', formatter: '.getTreeIcon'}"
+                    counter="{= ${workflow>Substep} ? ${workflow>taskCount} : undefined }"
+                />
+            </Tree>
+        </content>
+    </Page>
+</mvc:View>
