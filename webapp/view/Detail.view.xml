@@ -1,4 +1,5 @@
 <mvc:View
+    xmlns:core="sap.ui.core"
     xmlns:rowmodes="sap.ui.table.rowmodes"
     displayBlock="true"
     controllerName="com.sphinxjsc.shopping1.controller.Detail"
@@ -33,7 +34,6 @@
                         clear="onClear"
                         showGoOnFB="true"
                         filterChange="onFilterChange"
-                        afterVariantLoad="onAfterVariantLoad"
                     >
                         <filterbar:filterGroupItems>
                             <filterbar:FilterGroupItem
@@ -44,8 +44,9 @@
                             >
                                 <filterbar:control>
                                     <Input
+                                        id="Subject"
                                         name="Subject"
-                                        change=""
+                                        change="onSearch"
                                     />
                                 </filterbar:control>
                             </filterbar:FilterGroupItem>
@@ -57,10 +58,24 @@
                                 visibleInFilterBar="true"
                             >
                                 <filterbar:control>
-                                    <ComboBox
-                                        name="From"
-                                        change=""
-                                    />
+                                    <Select
+                                        id="from"
+                                        width="100%"
+                                        change="onSearch"
+                                    >
+                                        <core:Item
+                                            key=""
+                                            text="All"
+                                        />
+                                        <core:Item
+                                            key="SYSTEM"
+                                            text="System"
+                                        />
+                                        <core:Item
+                                            key="USER"
+                                            text="User"
+                                        />
+                                    </Select>
                                 </filterbar:control>
                             </filterbar:FilterGroupItem>
 
@@ -74,7 +89,7 @@
                                     <DatePicker
                                         id="datePicker"
                                         calendarWeekNumbering="MiddleEastern"
-                                        change=""
+                                        change="onSearch"
                                     />
                                 </filterbar:control>
                             </filterbar:FilterGroupItem>
@@ -86,7 +101,52 @@
                                 visibleInFilterBar="true"
                             >
                                 <filterbar:control>
-                                    <ComboBox />
+                                    <Select
+                                        id="priority"
+                                        width="100%"
+                                        change="onSearch"
+                                    >
+                                        <core:Item
+                                            key=""
+                                            text="All"
+                                        />
+                                        <core:Item
+                                            key="1"
+                                            text="1 Highest (Express)"
+                                        />
+                                        <core:Item
+                                            key="2"
+                                            text="2 Very High"
+                                        />
+                                        <core:Item
+                                            key="3"
+                                            text="3 Higher"
+                                        />
+                                        <core:Item
+                                            key="4"
+                                            text="4 High"
+                                        />
+                                        <core:Item
+                                            key="5"
+                                            text="5 Medium"
+                                        />
+                                        <core:Item
+                                            key="6"
+                                            text="6 Low"
+                                        />
+                                        <core:Item
+                                            key="7"
+                                            text="7 Lower"
+                                        />
+                                        <core:Item
+                                            key="8"
+                                            text="8 Very Low"
+                                        />
+                                        <core:Item
+                                            key="9"
+                                            text="9 Lowest"
+                                        />
+                                    </Select>
                                 </filterbar:control>
                             </filterbar:FilterGroupItem>
 
@@ -100,6 +160,7 @@
                                     <DatePicker
                                         id="datePicker2"
                                         calendarWeekNumbering="MiddleEastern"
+                                        change="onSearch"
                                     />
                                 </filterbar:control>
                             </filterbar:FilterGroupItem>
@@ -111,7 +172,60 @@
                                 visibleInFilterBar="true"
                             >
                                 <filterbar:control>
-                                    <ComboBox />
+                                    <Select
+                                        id="filterStatus"
+                                        width="100%"
+                                        change="onSearch"
+                                    >
+                                        <core:Item
+                                            key=""
+                                            text="All"
+                                        />
+                                        <core:Item
+                                            key="WAITING"
+                                            text="Waiting"
+                                        />
+                                        <core:Item
+                                            key="READY"
+                                            text="Ready"
+                                        />
+                                        <core:Item
+                                            key="SELECTED"
+                                            text="Accepted"
+                                        />
+                                        <core:Item
+                                            key="STARTED"
+                                            text="In Process"
+                                        />
+                                        <core:Item
+                                            key="ERROR"
+                                            text="Error"
+                                        />
+                                        <core:Item
+                                            key="COMMITTED"
+                                            text="Executed"
+                                        />
+                                        <core:Item
+                                            key="COMPLETED"
+                                            text="Completed"
+                                        />
+                                        <core:Item
+                                            key="CANCELLED"
+                                            text="Logically Deleted"
+                                        />
+                                        <core:Item
+                                            key="CHECKED"
+                                            text="In Preparation"
+                                        />
+                                        <core:Item
+                                            key="EXCPCAUGHT"
+                                            text="Exception Caught"
+                                        />
+                                        <core:Item
+                                            key="EXCPHANDLR"
+                                            text="Exception Active"
+                                        />
+                                    </Select>
                                 </filterbar:control>
                             </filterbar:FilterGroupItem>
 
@@ -122,7 +236,16 @@
                                 visibleInFilterBar="true"
                             >
                                 <filterbar:control>
-                                    <Select />
+                                    <Select
+                                        id="forwwarded"
+                                        width="100%"
+                                        change="onSearch"
+                                    >
+                                        <core:Item
+                                            key=""
+                                            text="All"
+                                        />
+                                    </Select>
                                 </filterbar:control>
                             </filterbar:FilterGroupItem>
                         </filterbar:filterGroupItems>
@@ -133,7 +256,7 @@
         <f:content>
             <table:Table
                 id="table"
-                rows="{detail>/ProductCollection}"
+                rows="{detail>/Rows}"
                 selectionMode="MultiToggle"
             >
                 <table:rowMode>
@@ -147,7 +270,21 @@
                             text="Show:"
                             required="true"
                         />
-                        <ComboBox />
+                        <Select
+                            selectedKey="inprogress"
+                            width="200px"
+                        >
+                            <items>
+                                <core:Item
+                                    key="inprogress"
+                                    text="In progress and New"
+                                />
+                                <core:Item
+                                    key="all"
+                                    text="All"
+                                />
+                            </items>
+                        </Select>
                         <ToolbarSpacer />
                         <Button icon="sap-icon://action-settings" />
                     </OverflowToolbar>
@@ -164,14 +301,21 @@
                     <table:Column width="28rem">
                         <Label text="Subject" />
                         <table:template>
-                            <Link text="{detail>Task}" />
+                            <Link text="{detail>TaskDescr}" />
+                        </table:template>
+                    </table:Column>
+
+                    <table:Column width="10rem">
+                        <Label text="TaskID" />
+                        <table:template>
+                            <Text text="{detail>Task}" />
                         </table:template>
                     </table:Column>
 
                     <table:Column width="10rem">
                         <Label text="From" />
                         <table:template>
-                            <Text text="{detail>WiForwBy}" />
+                            <Text text="{detail>Mancc}" />
                         </table:template>
                     </table:Column>
 
@@ -185,7 +329,32 @@
                     <table:Column width="10rem">
                         <Label text="Priority" />
                         <table:template>
-                            <Text text="{detail>WiPrio}" />
+                            <ObjectStatus
+                                text="{
+                                    path: 'detail>WiPrio',
+                                    formatter: '.priorityText'
+                                }"
+                                state="{
+                                    path: 'detail>WiPrio',
+                                    formatter: '.priorityState'
+                                }"
+                            />
+                        </table:template>
+                    </table:Column>
+
+                    <table:Column width="8rem">
+                        <Label text="Status" />
+                        <table:template>
+                            <ObjectStatus
+                                text="{
+                                    path: 'detail>WiStat',
+                                    formatter: '.statusText'
+                                }"
+                                state="{
+                                    path: 'detail>WiStat',
+                                    formatter: '.statusState'
+                                }"
+                            />
                         </table:template>
                     </table:Column>
 
@@ -193,6 +362,13 @@
                         <Label text="Due date" />
                         <table:template>
                             <Text text="{detail>WiAed}" />
+                        </table:template>
+                    </table:Column>
+
+                    <table:Column width="12rem">
+                        <Label text="Forwarded By" />
+                        <table:template>
+                            <Text text="{detail>WiForwBy}" />
                         </table:template>
                     </table:Column>
                 </table:columns>

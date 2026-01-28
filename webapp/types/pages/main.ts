@@ -29,11 +29,14 @@ export interface FieldValueHelpItem {
 }
 
 export interface RouteArguments {
-  step?: string;
-  substep?: string;
-  layout?: string;
-  product?: string;
-  supplier?: string;
+  step: string;
+  substep: string;
+  layout: string;
+}
+
+export interface WorkflowNode {
+  Step: string;
+  Substep: string;
 }
 
 export interface Task {
@@ -54,11 +57,6 @@ export interface Task {
   WiPrio: string;
   WiStat: string;
   WiText: string;
-}
-
-export interface WorkflowNode {
-  Step: string;
-  Substep: string;
 }
 
 export interface Substep {

@@ -38,8 +38,6 @@ export default class App extends Base {
     this.updateUIElements();
 
     this.currentRouteName = routerName;
-    // this.currentProduct = argument.product;
-    // this.currentSupplier = argument.supplier;
     this.currentProduct = argument.step;
     this.currentSupplier = argument.substep;
   };
@@ -55,9 +53,7 @@ export default class App extends Base {
         this.currentRouteName,
         {
           layout: layout,
-          // product: this.currentProduct,
-          // supplier: this.currentSupplier,
-          step: this.currentProduct, // ✅
+          step: this.currentProduct,
           substep: this.currentSupplier,
         },
         true

@@ -84,6 +84,10 @@ export default class Component extends BaseComponent {
             step.ToSubstepList?.results.map((sub) => ({
               ...sub,
               taskCount: sub.ToTaskList?.results?.length ?? 0,
+              ToTaskList:
+                sub.ToTaskList?.results.map((task) => ({
+                  ...task,
+                })) ?? [],
             })) ?? [],
         }));
 
