@@ -16,7 +16,7 @@ import type { Router$BeforeRouteMatchedEvent } from "sap/ui/core/routing/Router"
 import type Router from "sap/ui/core/routing/Router";
 import type ODataModel from "sap/ui/model/odata/v2/ODataModel";
 import type { ODataError, ODataReadResult } from "./types/odata";
-import type { ODataStep, Step } from "./types/pages/main";
+import type { ODataStep } from "./types/pages/main";
 
 /**
  * @namespace com.sphinxjsc.shopping1
@@ -80,15 +80,7 @@ export default class Component extends BaseComponent {
 
         const steps = response.results.map((step) => ({
           ...step,
-          ToSubstepList:
-            step.ToSubstepList?.results.map((sub) => ({
-              ...sub,
-              taskCount: sub.ToTaskList?.results?.length ?? 0,
-              ToTaskList:
-                sub.ToTaskList?.results.map((task) => ({
-                  ...task,
-                })) ?? [],
-            })) ?? [],
+          ToSubstepList: step.ToSubstepList?.results ?? [],
         }));
 
         this.setModel(new JSONModel({ steps }), "workflow");

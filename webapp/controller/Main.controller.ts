@@ -1,4 +1,4 @@
-import type { ListBase$ItemPressEvent, ListBase$SelectionChangeEvent } from "sap/m/ListBase";
+import type { ListBase$SelectionChangeEvent } from "sap/m/ListBase";
 import type Router from "sap/ui/core/routing/Router";
 import Base from "./Base.controller";
 import type { Route$PatternMatchedEvent } from "sap/ui/core/routing/Route";
@@ -15,8 +15,8 @@ export default class Main extends Base {
   public override onInit(): void {
     this.router = this.getRouter();
 
-    this.router.getRoute("TargetMain")?.attachPatternMatched(this.onRouteMatched.bind(this), this);
-    this.router.getRoute("detail")?.attachPatternMatched(this.onRouteMatched.bind(this), this);
+    this.router.getRoute("TargetMain")?.attachPatternMatched(this.onRouteMatched, this);
+    this.router.getRoute("detail")?.attachPatternMatched(this.onRouteMatched, this);
   }
 
   public override onAfterRendering() {

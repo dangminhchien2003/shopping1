@@ -39,6 +39,17 @@ export interface WorkflowNode {
   Substep: string;
 }
 
+export interface ODataMetadata {
+  id: string;
+  uri: string;
+  type: string;
+}
+
+export interface ODataTime {
+  ms: number;
+  __edmType: "Edm.Time";
+}
+
 export interface Task {
   TaskId: string;
   Step: string;
@@ -57,6 +68,25 @@ export interface Task {
   WiPrio: string;
   WiStat: string;
   WiText: string;
+}
+
+export interface TaskList {
+  Step: string;
+  Substep: string;
+  Task: string;
+  TaskDescr: string;
+  WiId: string;
+  WiText: string;
+  WiPrio: string;
+  WiStat: string;
+  WiForwBy: string;
+  WiAed: Date;
+  WiCd: Date;
+  WiCt: ODataTime;
+  Magms: string;
+  Mancc: string;
+  Screen: string;
+  __metadata: ODataMetadata;
 }
 
 export interface Substep {

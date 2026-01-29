@@ -23,7 +23,7 @@
                 <StandardTreeItem
                     title="{= ${workflow>SubstepDescr} ? ${workflow>SubstepDescr} : ${workflow>StepDescr} }"
                     icon="{path: 'workflow>Substep', formatter: '.getTreeIcon'}"
-                    counter="{= ${workflow>Substep} ? ${workflow>taskCount} : undefined }"
+                    counter="{= ${workflow>Substep} ? Number(${workflow>Count}) : undefined }"
                 />
             </Tree>
         </content>

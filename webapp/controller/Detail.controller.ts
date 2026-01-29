@@ -4,7 +4,7 @@ import Base from "./Base.controller";
 import type { Route$MatchedEvent } from "sap/ui/core/routing/Route";
 import FilterOperator from "sap/ui/model/FilterOperator";
 import Filter from "sap/ui/model/Filter";
-import type { RouteArguments, Step } from "../types/pages/main";
+import type { RouteArguments, Step, TaskList } from "../types/pages/main";
 import type Button from "sap/m/Button";
 import type DatePicker from "sap/m/DatePicker";
 import type TimePicker from "sap/m/TimePicker";
@@ -21,6 +21,8 @@ import type { Dict } from "../types/utils";
 import type Table from "sap/ui/table/Table";
 import type DynamicPage from "sap/f/DynamicPage";
 import type ListBinding from "sap/ui/model/ListBinding";
+import type ODataModel from "sap/ui/model/odata/v2/ODataModel";
+import type { ODataError, ODataResponses } from "../types/odata";
 
 /**
  * @namespace com.sphinxjsc.shopping1.controller
@@ -45,6 +47,13 @@ export default class Detail extends Base {
     this.table = this.getControlById<Table>("table");
     this.layout = this.getControlById<DynamicPage>("dynamicPage");
 
+    this.setModel(
+      new JSONModel({
+        rows: [],
+      }),
+      "table"
+    );
+
     this.formatfiler();
 
     //filter
@@ -57,7 +66,7 @@ export default class Detail extends Base {
     const args = <RouteArguments>event.getParameter("arguments");
 
     this.setHeaderTitleFromWorkflow(args.step, args.substep);
-    this.loadTasksFromCache(args.step, args.substep);
+    this.loadTasks(args.step, args.substep);
   }
 
   // #region Filters
@@ -232,29 +241,25 @@ export default class Detail extends Base {
     this.getView()?.setModel(new JSONModel({ name: titleText }), "header");
   }
 
-  private loadTasksFromCache(step: string, substep: string): void {
-    const workflowModel = this.getModel<JSONModel>("workflow");
+  private loadTasks(step: string, substep: string): void {
+    const oDataModel = this.getModel<ODataModel>();
+    const tabeModel = this.getModel<JSONModel>("table");
 
-    if (!workflowModel) {
-      return;
-    }
+    const filters: Filter[] = [
+      new Filter("Step", FilterOperator.EQ, step),
+      new Filter("Substep", FilterOperator.EQ, substep),
+    ];
+    oDataModel.read("/TaskListSet", {
+      filters,
+      success: (response: ODataResponses<TaskList>) => {
+        console.log("OData read success:", response.results);
 
-    const steps = <Step[]>workflowModel.getProperty("/steps");
-    if (!Array.isArray(steps)) {
-      return;
-    }
-
-    const stepNode = steps.find((s) => s.Step === step);
-    if (!stepNode) return;
-
-    const subNode = stepNode?.ToSubstepList?.find((ss) => ss.Substep === substep);
-    if (!subNode) return;
-
-    const tasks = subNode.ToTaskList || [];
-
-    this.getView()?.setModel(new JSONModel({ Rows: tasks }), "detail");
-
-    console.log("data detail item", this.getView()?.getModel("detail")?.getProperty("/Rows"));
+        tabeModel.setProperty("/rows", response.results);
+      },
+      error: (error: ODataError) => {
+        console.error("OData read error:", error);
+      },
+    });
   }
 
   public onRefresh(): void {

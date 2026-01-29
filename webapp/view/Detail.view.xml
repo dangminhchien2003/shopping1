@@ -256,7 +256,7 @@
         <f:content>
             <table:Table
                 id="table"
-                rows="{detail>/Rows}"
+                rows="{table>/rows}"
                 selectionMode="MultiToggle"
             >
                 <table:rowMode>
@@ -301,28 +301,26 @@
                     <table:Column width="28rem">
                         <Label text="Subject" />
                         <table:template>
-                            <Link text="{detail>TaskDescr}" />
-                        </table:template>
-                    </table:Column>
-
-                    <table:Column width="10rem">
-                        <Label text="TaskID" />
-                        <table:template>
-                            <Text text="{detail>Task}" />
+                            <Link text="{table>WiText}" />
                         </table:template>
                     </table:Column>
 
                     <table:Column width="10rem">
                         <Label text="From" />
                         <table:template>
-                            <Text text="{detail>Mancc}" />
+                            <Text text="{table>Mancc}" />
                         </table:template>
                     </table:Column>
 
                     <table:Column width="10rem">
                         <Label text="Sent On" />
                         <table:template>
-                            <Text text="{detail>WiCd}" />
+                            <Text
+                                text="{
+                                    path: 'table>WiCd',
+                                    formatter: '.formatter.formatDate'
+                                }"
+                            />
                         </table:template>
                     </table:Column>
 
@@ -331,11 +329,11 @@
                         <table:template>
                             <ObjectStatus
                                 text="{
-                                    path: 'detail>WiPrio',
+                                    path: 'table>WiPrio',
                                     formatter: '.priorityText'
                                 }"
                                 state="{
-                                    path: 'detail>WiPrio',
+                                    path: 'table>WiPrio',
                                     formatter: '.priorityState'
                                 }"
                             />
@@ -347,11 +345,11 @@
                         <table:template>
                             <ObjectStatus
                                 text="{
-                                    path: 'detail>WiStat',
+                                    path: 'table>WiStat',
                                     formatter: '.statusText'
                                 }"
                                 state="{
-                                    path: 'detail>WiStat',
+                                    path: 'table>WiStat',
                                     formatter: '.statusState'
                                 }"
                             />
@@ -361,14 +359,19 @@
                     <table:Column width="10rem">
                         <Label text="Due date" />
                         <table:template>
-                            <Text text="{detail>WiAed}" />
+                            <Text
+                                text="{
+                                    path: 'table>WiAed',
+                                    formatter: '.formatter.formatDate'
+                                }"
+                            />
                         </table:template>
                     </table:Column>
 
                     <table:Column width="12rem">
                         <Label text="Forwarded By" />
                         <table:template>
-                            <Text text="{detail>WiForwBy}" />
+                            <Text text="{table>WiForwBy}" />
                         </table:template>
                     </table:Column>
                 </table:columns>
