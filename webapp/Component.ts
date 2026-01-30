@@ -43,6 +43,14 @@ export default class Component extends BaseComponent {
       }),
       "global"
     );
+
+    this.setModel(
+      new JSONModel({
+        steps: [],
+      }),
+      "workflow"
+    );
+
     this.loadWorkflow();
 
     // Message manager
@@ -70,6 +78,7 @@ export default class Component extends BaseComponent {
 
   private loadWorkflow(): void {
     const oModel = <ODataModel>this.getModel();
+    const workflowModel = <JSONModel>this.getModel("workflow");
 
     oModel.read("/StepListSet", {
       urlParameters: {
@@ -83,7 +92,7 @@ export default class Component extends BaseComponent {
           ToSubstepList: step.ToSubstepList?.results ?? [],
         }));
 
-        this.setModel(new JSONModel({ steps }), "workflow");
+        workflowModel.setProperty("/steps", steps);
 
         const firstStep = steps[0];
         const firstSubstep = firstStep?.ToSubstepList?.[0];
@@ -101,7 +110,9 @@ export default class Component extends BaseComponent {
         }
       },
 
-      error: (error: ODataError) => console.error(error),
+      error: (error: ODataError) => {
+        console.error("OData read error:", error);
+      },
     });
   }
 

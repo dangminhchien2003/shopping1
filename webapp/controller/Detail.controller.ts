@@ -54,6 +54,13 @@ export default class Detail extends Base {
       "table"
     );
 
+    this.setModel(
+      new JSONModel({
+        name: "",
+      }),
+      "header"
+    );
+
     this.formatfiler();
 
     //filter
@@ -223,7 +230,8 @@ export default class Detail extends Base {
   }
 
   private setHeaderTitleFromWorkflow(step: string, substep: string): void {
-    const workflowModel = this.getModel<JSONModel>("workflow");
+    const workflowModel = this.getModel("workflow");
+    const headerModel = this.getModel("header");
 
     if (!workflowModel) {
       return;
@@ -238,7 +246,7 @@ export default class Detail extends Base {
     const subNode = stepNode.ToSubstepList?.find((ss) => ss.Substep === substep);
     const titleText = subNode?.SubstepDescr;
 
-    this.getView()?.setModel(new JSONModel({ name: titleText }), "header");
+    headerModel.setProperty("/name", titleText);
   }
 
   private loadTasks(step: string, substep: string): void {
@@ -310,15 +318,15 @@ export default class Detail extends Base {
 
   public priorityText(Priority: string) {
     const mPriority: Record<string, string> = {
-      "1": "1 Highest - Express",
-      "2": "2 Very high",
-      "3": "3 Higher",
-      "4": "4 High",
-      "5": "5 Medium",
-      "6": "6 Low",
-      "7": "7 Lower",
-      "8": "8 Very low",
-      "9": "9 Lowest",
+      "1": "Highest - Express",
+      "2": "Very high",
+      "3": "Higher",
+      "4": "High",
+      "5": "Medium",
+      "6": "Low",
+      "7": "Lower",
+      "8": "Very low",
+      "9": "Lowest",
     };
     return mPriority[Priority] || Priority;
   }

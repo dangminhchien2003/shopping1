@@ -25,7 +25,7 @@ export default class Main extends Base {
     const tree = this.getControlById<Tree>("tree");
 
     tree.attachEventOnce("updateFinished", () => {
-      // lấy step/substep hiện tại từ URL (đã được navTo từ Component)
+      // lấy step/substep hiện tại từ URL
       const hash = HashChanger.getInstance().getHash();
       const match = hash.match(/detail\/([^/]+)\/([^/]+)/);
 
@@ -33,14 +33,14 @@ export default class Main extends Base {
 
       const [, step, substep] = match;
 
-      const items = tree.getItems() as TreeItemBase[];
+      const items = <TreeItemBase[]>tree.getItems();
 
       // tìm đúng item theo Step + Substep
       const targetItem = items.find((item) => {
         const ctx = item.getBindingContext("workflow");
         if (!ctx) return false;
 
-        const node = ctx.getObject() as WorkflowNode;
+        const node = <WorkflowNode>ctx.getObject();
         return node.Step === step && node.Substep === substep;
       });
 
