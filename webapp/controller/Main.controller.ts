@@ -4,6 +4,8 @@ import Base from "./Base.controller";
 import type { Route$PatternMatchedEvent } from "sap/ui/core/routing/Route";
 import type { WorkflowNode } from "../types/pages/main";
 import type Tree from "sap/m/Tree";
+import type TreeItemBase from "sap/m/TreeItemBase";
+import HashChanger from "sap/ui/core/routing/HashChanger";
 
 /**
  * @namespace com.sphinxjsc.shopping1.controller
@@ -21,11 +23,31 @@ export default class Main extends Base {
 
   public override onAfterRendering() {
     const tree = this.getControlById<Tree>("tree");
-    const items = tree.getItems();
 
-    if (items.length > 0) {
-      tree.setSelectedItem(items[0]);
-    }
+    tree.attachEventOnce("updateFinished", () => {
+      // lấy step/substep hiện tại từ URL (đã được navTo từ Component)
+      const hash = HashChanger.getInstance().getHash();
+      const match = hash.match(/detail\/([^/]+)\/([^/]+)/);
+
+      if (!match) return;
+
+      const [, step, substep] = match;
+
+      const items = tree.getItems() as TreeItemBase[];
+
+      // tìm đúng item theo Step + Substep
+      const targetItem = items.find((item) => {
+        const ctx = item.getBindingContext("workflow");
+        if (!ctx) return false;
+
+        const node = ctx.getObject() as WorkflowNode;
+        return node.Step === step && node.Substep === substep;
+      });
+
+      if (targetItem) {
+        tree.setSelectedItem(targetItem);
+      }
+    });
   }
 
   public onSelectionChange(event: ListBase$SelectionChangeEvent): void {
